@@ -12,6 +12,7 @@ The project is divided into the following main tasks:
 - Responsive Design (table → card view)
 - Internationalization (i18n)
 - Security Review (safe input handling, role simulation)
+- Test and fix potential issues, code refactoring
 - Documentation
 
 ---
@@ -34,19 +35,20 @@ Approach used:
 
 ## 3. Estimate Table
 
-| Task                | Estimated Time | Confidence | Dependencies |
-| ------------------- | -------------- | ---------- | ------------ |
-| Project setup       | 1h             | High       | None         |
-| UI Development      | 4h             | High       | None         |
-| API Integration     | 4h             | Medium     | Mock data    |
-| Search and Filters  | 2h             | High       | UI           |
-| Deduplication logic | 1h             | Medium     | API          |
-| Responsive design   | 3h             | Medium     | UI           |
-| i18n                | 2h             | Medium     | UI           |
-| Role-based access   | 1h             | Medium     | Store        |
-| Documentation       | 2h             | High       | All features |
+| Task                  | Estimated Time | Confidence | Dependencies |
+| --------------------- | -------------- | ---------- | ------------ |
+| Project setup         | 1h             | High       | None         |
+| UI Development        | 3h             | High       | None         |
+| API Integration       | 3h             | Medium     | Mock data    |
+| Search and Filters    | 2h             | High       | UI           |
+| Deduplication logic   | 1h             | Medium     | API          |
+| Responsive design     | 3h             | Medium     | UI           |
+| i18n                  | 2h             | Medium     | UI           |
+| Role-based access     | 1h             | Medium     | Store        |
+| Documentation         | 2h             | High       | All features |
+| Test, fixes, refactor | 3h             | Medium     | All features |
 
-### Total Estimated Time: ~20 hours
+### Total Estimated Time: ~21 hours
 
 ---
 
@@ -82,6 +84,16 @@ Approach used:
 
 - **Issue:** Partner may not see all data immediately
 - **Mitigation:** Document limitation and explain backend solution
+
+### Risk 5: Lack of TypeScript usage
+
+- **Issue:** Without TypeScript, there is a higher risk of runtime errors, invalid data types, and harder maintainability
+- **Mitigation:** Introduce TypeScript for stricter type safety, especially for API data, props, and store logic
+
+### Risk 6: Tailwind CSS browser compatibility
+
+- **Issue:** Tailwind relies on modern CSS features (e.g. flexbox, grid, gap) which may not be fully supported in older browsers
+- **Mitigation:** Use PostCSS with Autoprefixer (already included) and test in target browsers; define supported browser list if needed
 
 ---
 

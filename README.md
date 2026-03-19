@@ -28,39 +28,48 @@ The application is structured with the following layers:
 
 ### Components
 
-Reusable Vue components (SearchInput, TableFilters, LanguageSwitcher, etc.)
+- Reusable Vue components (SearchInput, TableFilters, LanguageSwitcher, Header and DealTable)
 
 ### Pages
 
-Dashboard.vue, DealDetail.vue for main views
+- Dashboard.vue, DealDetail.vue for main views
+
+### Pagination
+
+- Implemented a "Load More" pagination approach.
+- A button progressively loads additional data, keeping the UI simple and avoiding performance issues.
+- This approach was chosen due to time constraints and its ease of handling API errors and retries.
+- Infinite scroll was considered but omitted for simplicity.
 
 ### Stores
 
-Pinia stores handle application state
+- Pinia stores handle application state
+- Used Pinia for state management to keep data consistent between pages.
+- Also for enabling easier caching, polling, reactive updates.
 
 #### useDealsStore
 
-Manages deals data, pagination, polling, caching
+- Manages deals data, pagination, polling, caching
 
 #### useUserStore
 
-Simulates role-based access (Admin / Partner)
+- Simulates role-based access (Admin / Partner)
 
 ### Services
 
-dealService.js simulates API fetches, deduplication, and merging
+- dealService.js simulates API fetches, deduplication, and merging
 
 ### Routing
 
-Vue Router handles navigation between dashboard and deal details
+- Vue Router handles navigation between dashboard and deal details
 
 ### i18n
 
-vue-i18n handles translations
+- vue-i18n handles translations
 
 ### Assets
 
-Flag icons and other static resources
+- Flag icons and other static resources
 
 ### Data flow
 
@@ -71,17 +80,11 @@ Flag icons and other static resources
 
 ## 3. Responsive Design Approach
 
-- Flexbox + Tailwind used to center filters and search
+- Tailwind CSS and Flexbox were used to achieve a responsive layout in a simple and efficient way, taking into account the limited time available for completing the task.
 - Mobile/desktop adjustments use Tailwind responsive classes (md: prefixes)
 - Table headers hidden on mobile, replaced by inline labels per card
-
-### Desktop
-
-Full table view
-
-### Mobile
-
-Table transforms into card-style rows for readability
+- Desktop - Full table view
+- Mobile - Table transforms into card-style rows for readability
 
 ## 4. Internationalization (i18n) Strategy
 
@@ -112,6 +115,61 @@ Deduplication:
 
 - Ensures duplicate deals never appear in UI
 - Keeps the most recently updated record
+
+### Top 5 Frontend Security Risks & Mitigations
+
+#### 5.1. Cross-Site Scripting (XSS)
+
+- **Risk:** Malicious scripts could be injected via user input and executed in the browser.
+- **Mitigation:**
+  - No use of `v-html` or raw HTML rendering
+  - All user input is treated as untrusted
+  - Vue automatically escapes interpolated values (`{{ }}`)
+
+---
+
+#### 5.2. Dependency Vulnerabilities
+
+- **Risk:** Third-party libraries may contain known security vulnerabilities.
+- **Mitigation:**
+  - Use of well-known and actively maintained libraries (Vue, Pinia, Axios)
+  - Dependencies kept up to date
+  - Minimal number of external libraries used
+
+---
+
+#### 5.3. Sensitive Data Exposure
+
+- **Risk:** Sensitive data could be exposed in logs or stored insecurely.
+- **Mitigation:**
+  - No sensitive data stored in the application
+  - No logging of user-related or critical data
+  - Mock data used for all API simulations
+
+---
+
+#### 5.4. Improper Error Handling
+
+- **Risk:** Poor error handling can expose internal logic or break the UI.
+- **Mitigation:**
+  - Errors are caught and displayed in a user-friendly way
+  - No stack traces or internal details exposed to the UI
+  - Retry mechanism implemented for failed API calls
+
+---
+
+#### 5.5. Token Storage / Authentication Issues
+
+- **Risk:** Insecure storage of authentication tokens (e.g., localStorage) can lead to account compromise.
+- **Mitigation:**
+  - No authentication system implemented (role-based access is simulated only)
+  - Clear documentation that real-world implementation requires secure backend handling (e.g., HTTP-only cookies)
+
+---
+
+### Note
+
+The application demonstrates secure frontend practices, but real security must be enforced on the backend in production systems.
 
 ## 6. Features
 
