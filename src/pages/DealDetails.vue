@@ -1,40 +1,52 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import dealsData from "../mock/deals.json";
+import { useDealsStore } from "../stores/dealsStore";
 import { useUserStore } from "../stores/userStore";
-
-const userStore = useUserStore();
 
 const route = useRoute();
 const router = useRouter();
 
+const store = useDealsStore();
+const userStore = useUserStore();
+
 const deal = ref(null);
 const loading = ref(true);
+const error = ref(null);
 
 const dealId = route.params.id;
 
-onMounted(() => {
-  // find deal
-  const found = dealsData.find((d) => String(d.id) === String(dealId));
+// FETCH + ACCESS CONTROL
+onMounted(async () => {
+  try {
+    // ako nema podataka (npr refresh stranice)
+    if (!store.deals.length) {
+      await store.loadDeals();
+    }
 
-  // no deal
-  if (!found) {
+    const found = store.deals.find((d) => String(d.id) === String(dealId));
+
+    // nije pronađen
+    if (!found) {
+      error.value = "notFound";
+      return;
+    }
+
+    // role check
+    if (!userStore.canViewDeal(found.id)) {
+      error.value = "noAccess";
+      return;
+    }
+
+    deal.value = found;
+  } catch (e) {
+    error.value = "error";
+  } finally {
     loading.value = false;
-    return;
   }
-
-  // check role
-  if (!userStore.canViewDeal(found.id)) {
-    alert("You do not have access to this deal.");
-    router.push("/");
-    return;
-  }
-
-  deal.value = found;
-  loading.value = false;
 });
 
+// BACK
 function goBack() {
   router.push("/");
 }
@@ -61,10 +73,22 @@ function statusClass(status) {
       </button>
 
       <!-- LOADING -->
-      <div v-if="loading" class="text-gray-500">{{ $t("loading") }}</div>
+      <div v-if="loading" class="text-gray-500 text-center">
+        {{ $t("loading") }}
+      </div>
 
-      <!-- NOT FOUND -->
-      <div v-else-if="!deal" class="text-red-500">{{ $t("notResults") }}</div>
+      <!-- ERROR STATES -->
+      <div v-else-if="error === 'notFound'" class="text-red-500 text-center">
+        {{ $t("notResults") }}
+      </div>
+
+      <div v-else-if="error === 'noAccess'" class="text-red-500 text-center">
+        You do not have access to this deal.
+      </div>
+
+      <div v-else-if="error === 'error'" class="text-red-500 text-center">
+        Something went wrong.
+      </div>
 
       <!-- CONTENT -->
       <div v-else>
