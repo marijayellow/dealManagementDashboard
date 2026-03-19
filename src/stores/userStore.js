@@ -1,16 +1,16 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
 export const useUserStore = defineStore("user", () => {
-  // Current role
-  const role = ref("Admin"); // "Admin" or "Partner"
+  // Current user role: "Admin" or "Partner"
+  const role = ref("Partner");
 
-  // partner assigned deals
-  const assignedDealIds = ref([1, 3, 6]); // example
+  // Partner's assigned deals (IDs)
+  const assignedDealIds = ref([1, 3, 6]);
 
+  // Check if user can view a deal
   function canViewDeal(dealId) {
-    if (role.value === "Admin") return true;
-    return assignedDealIds.value.includes(dealId);
+    return role.value === "Admin" || assignedDealIds.value.includes(dealId);
   }
 
   return {

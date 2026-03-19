@@ -1,9 +1,9 @@
 <script setup>
 const props = defineProps({
-  deals: Array,
-  loading: Boolean,
-  error: String,
-  onRetry: Function,
+  deals: { type: Array, default: () => [] },
+  loading: { type: Boolean, default: false },
+  error: { type: String, default: "" },
+  onRetry: { type: Function, default: () => {} },
 });
 
 const emit = defineEmits(["rowClick"]);
@@ -11,18 +11,31 @@ const emit = defineEmits(["rowClick"]);
 
 <template>
   <div class="overflow-x-auto">
-    <div v-if="loading" class="py-4">{{ $t("loading") }}</div>
-    <div v-else-if="error" class="py-4 text-red-500 flex flex-col gap-2">
+    <!-- LOADING STATE -->
+    <div v-if="loading" class="py-4 text-center text-gray-500">
+      {{ $t("loading") }}
+    </div>
+
+    <!-- ERROR STATE -->
+    <div
+      v-else-if="error"
+      class="py-4 text-red-500 flex flex-col items-center gap-2"
+    >
       <span>{{ error }}</span>
       <button
         @click="onRetry()"
-        class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 w-fit"
+        class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition"
       >
         {{ $t("retry") }}
       </button>
     </div>
-    <table v-else class="min-w-full border border-gray-300">
-      <thead class="bg-gray-100">
+
+    <!-- TABLE -->
+    <table
+      v-else
+      class="min-w-full border border-gray-300 rounded-lg overflow-hidden"
+    >
+      <thead class="bg-gray-100 text-gray-600 text-sm">
         <tr>
           <th class="px-4 py-2 text-left">{{ $t("description") }}</th>
           <th class="px-4 py-2 text-left">{{ $t("account") }}</th>
@@ -35,7 +48,7 @@ const emit = defineEmits(["rowClick"]);
         <tr
           v-for="deal in deals"
           :key="deal.id"
-          class="hover:bg-gray-50 cursor-pointer"
+          class="hover:bg-gray-50 cursor-pointer transition"
           @click="$emit('rowClick', deal.id)"
         >
           <td class="px-4 py-2">{{ deal.name }}</td>
@@ -44,8 +57,10 @@ const emit = defineEmits(["rowClick"]);
           <td class="px-4 py-2">{{ deal.amount }}</td>
           <td class="px-4 py-2">{{ deal.createdAt }}</td>
         </tr>
-        <tr v-if="deals.length === 0">
-          <td colspan="5" class="px-4 py-2 text-center">
+
+        <!-- EMPTY STATE -->
+        <tr v-if="!deals.length">
+          <td colspan="5" class="px-4 py-4 text-center text-gray-500">
             {{ $t("noResults") }}
           </td>
         </tr>

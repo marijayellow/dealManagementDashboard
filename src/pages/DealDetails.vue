@@ -16,23 +16,20 @@ const error = ref(null);
 
 const dealId = route.params.id;
 
-// FETCH + ACCESS CONTROL
 onMounted(async () => {
   try {
-    // ako nema podataka (npr refresh stranice)
     if (!store.deals.length) {
       await store.loadDeals();
     }
 
     const found = store.deals.find((d) => String(d.id) === String(dealId));
 
-    // nije pronađen
     if (!found) {
       error.value = "notFound";
       return;
     }
 
-    // role check
+    // Role check
     if (!userStore.canViewDeal(found.id)) {
       error.value = "noAccess";
       return;
@@ -46,12 +43,11 @@ onMounted(async () => {
   }
 });
 
-// BACK
 function goBack() {
   router.push("/");
 }
 
-// STATUS STYLE
+// Status style
 function statusClass(status) {
   return {
     Open: "bg-gray-200 text-gray-700",

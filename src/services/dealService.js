@@ -1,11 +1,16 @@
 import dealsData from "../mock/deals.json";
 
-// simulate delay-a
+/**
+ * Simulate network delay
+ */
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// DEDUP LOGIC
+/**
+ * Deduplicate deals by `id`
+ * If duplicates exist, keep the one with the latest `updatedAt`
+ */
 function dedupeDeals(deals) {
   const map = new Map();
 
@@ -15,7 +20,7 @@ function dedupeDeals(deals) {
     if (!existing) {
       map.set(deal.id, deal);
     } else {
-      // keep the newer (updatedAt)
+      // Keep the deal with the newer updatedAt timestamp
       const existingDate = new Date(existing.updatedAt);
       const newDate = new Date(deal.updatedAt);
 
@@ -28,21 +33,22 @@ function dedupeDeals(deals) {
   return Array.from(map.values());
 }
 
+/**
+ * Fetch deals with simulated API delay, deduplication and pagination
+ */
 export async function fetchDeals({ page = 1, limit = 5 }) {
   await delay(500);
 
-  // Simulate error
-  // if (Math.random() < 0.2) {
-  //   throw new Error("Failed to fetch deals");
-  // }
+  // Uncomment to simulate random API errors
+  // if (Math.random() < 0.2) throw new Error("Failed to fetch deals");
 
-  // Simulate noisy API (duplikati)
+  // Simulate API returning duplicates
   const noisyData = [...dealsData, ...dealsData.slice(0, 3)];
 
-  // dedupe complete dataset (as backend truth)
+  // Deduplicate entire dataset
   const uniqueDeals = dedupeDeals(noisyData);
 
-  // pagination with CLEAN data
+  // Paginate the clean data
   const start = (page - 1) * limit;
   const paginated = uniqueDeals.slice(start, start + limit);
 
@@ -52,9 +58,11 @@ export async function fetchDeals({ page = 1, limit = 5 }) {
   };
 }
 
-// MERGE + DEDUP (for pagination)
+/**
+ * Merge existing deals with new deals and deduplicate
+ * Useful for pagination and data refresh
+ */
 export function mergeDeals(existingDeals, newDeals) {
   const merged = [...existingDeals, ...newDeals];
-
   return dedupeDeals(merged);
 }

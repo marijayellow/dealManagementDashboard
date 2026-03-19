@@ -1,6 +1,6 @@
 <script setup>
 import { useI18n } from "vue-i18n";
-import { onMounted } from "vue";
+import { onMounted, computed } from "vue";
 
 import enFlag from "../assets/flags/en.svg";
 import jaFlag from "../assets/flags/ja.svg";
@@ -26,12 +26,11 @@ function changeLanguage(langCode) {
   sessionStorage.setItem("locale", langCode);
 }
 
-// active button style
-function buttonClass(langCode) {
-  return locale.value === langCode
-    ? "bg-gray-300 text-gray-900"
+// Classes for active and inactive buttons
+const buttonClass = (langCode) =>
+  locale.value === langCode
+    ? "bg-blue-100 text-blue-800 font-semibold"
     : "bg-gray-100 text-gray-700 hover:bg-gray-200";
-}
 </script>
 
 <template>
@@ -46,9 +45,7 @@ function buttonClass(langCode) {
       ]"
     >
       <img :src="lang.icon" class="w-5 h-4 md:w-6 md:h-4" alt="" />
-      <span class="hidden md:inline text-sm font-medium">
-        {{ lang.name }}
-      </span>
+      <span class="hidden md:inline text-sm">{{ lang.name }}</span>
     </button>
   </div>
 </template>

@@ -15,15 +15,15 @@ const selectedStatuses = ref([]);
 const minAmount = ref(null);
 const maxAmount = ref(null);
 
-// FILTERs + SEARCH
+// Filter and search
 const filteredDeals = computed(() => {
   const term = search.value.toLowerCase().trim();
 
   return store.deals.filter((deal) => {
-    // Role-based check
+    // Role-based access
     if (!userStore.canViewDeal(deal.id)) return false;
 
-    // Search + filter logic
+    // Search + filter
     const matchesSearch =
       deal.name.toLowerCase().includes(term) ||
       deal.account.toLowerCase().includes(term) ||
@@ -44,15 +44,18 @@ function goToDeal(id) {
   router.push(`/deal/${id}`);
 }
 
+// Polling + initial load
 onMounted(() => {
-  // caching check
+  // Caching check
   if (!store.deals.length) store.loadDeals();
-  store.startPolling();
+
+  if (store.startPolling) store.startPolling();
+});
+onUnmounted(() => {
+  if (store.stopPolling) store.stopPolling();
 });
 
-onUnmounted(() => {
-  store.stopPolling();
-});
+// Status style
 function statusClass(status) {
   return {
     Open: "bg-gray-200 text-gray-700",
@@ -74,8 +77,10 @@ function statusClass(status) {
         {{ $t("dashboardTitle") }}
       </h1>
 
-      <!-- SEARCH + FILTERS -->
-      <div class="flex flex-col items-center gap-4 mb-6">
+      <!-- SEARCH + FILTERS CENTERED -->
+      <div
+        class="flex flex-col md:flex-col md:justify-center items-center gap-4 mb-6 w-full"
+      >
         <SearchInput v-model="search" />
 
         <TableFilters
@@ -89,9 +94,8 @@ function statusClass(status) {
       </div>
 
       <!-- ERROR -->
-      <div v-if="store.error" class="text-red-500 text-center">
+      <div v-if="store.error" class="text-red-500 text-center mb-4">
         {{ store.error }}
-
         <button @click="store.loadDeals" class="ml-2 underline">
           {{ $t("retry") }}
         </button>
@@ -100,7 +104,6 @@ function statusClass(status) {
       <!-- TABLE / LIST -->
       <div class="overflow-x-auto">
         <table class="w-full border border-gray-200 rounded-lg">
-          <!-- HEADER (hidden on mobile) -->
           <thead
             class="hidden md:table-header-group bg-gray-50 text-sm text-gray-600"
           >
@@ -122,28 +125,25 @@ function statusClass(status) {
             >
               <!-- NAME -->
               <td class="p-3 block md:table-cell text-left md:text-center">
-                <span class="md:hidden font-semibold block mb-1">
-                  {{ $t("description") }}
-                </span>
-                <span class="font-medium text-gray-800">
-                  {{ deal.name }}
-                </span>
+                <span class="md:hidden font-semibold block mb-1">{{
+                  $t("description")
+                }}</span>
+                <span class="font-medium text-gray-800">{{ deal.name }}</span>
               </td>
 
               <!-- ACCOUNT -->
               <td class="p-3 block md:table-cell text-left md:text-center">
-                <span class="md:hidden font-semibold block mb-1">
-                  {{ $t("account") }}
-                </span>
+                <span class="md:hidden font-semibold block mb-1">{{
+                  $t("account")
+                }}</span>
                 {{ deal.account }}
               </td>
 
               <!-- STATUS -->
               <td class="p-3 block md:table-cell text-left md:text-center">
-                <span class="md:hidden font-semibold block mb-1">
-                  {{ $t("status") }}
-                </span>
-
+                <span class="md:hidden font-semibold block mb-1">{{
+                  $t("status")
+                }}</span>
                 <span
                   class="px-2 py-1 text-xs rounded-full"
                   :class="statusClass(deal.status)"
@@ -154,17 +154,17 @@ function statusClass(status) {
 
               <!-- AMOUNT -->
               <td class="p-3 block md:table-cell text-left md:text-center">
-                <span class="md:hidden font-semibold block mb-1">
-                  {{ $t("amount") }}
-                </span>
+                <span class="md:hidden font-semibold block mb-1">{{
+                  $t("amount")
+                }}</span>
                 ${{ deal.amount }}
               </td>
 
               <!-- CREATED -->
               <td class="p-3 block md:table-cell text-left md:text-center">
-                <span class="md:hidden font-semibold block mb-1">
-                  {{ $t("created") }}
-                </span>
+                <span class="md:hidden font-semibold block mb-1">{{
+                  $t("created")
+                }}</span>
                 {{ deal.createdAt }}
               </td>
             </tr>
@@ -172,7 +172,7 @@ function statusClass(status) {
         </table>
       </div>
 
-      <!-- EMPTY -->
+      <!-- EMPTY STATE -->
       <p
         v-if="filteredDeals.length === 0"
         class="text-gray-500 mt-4 text-center"

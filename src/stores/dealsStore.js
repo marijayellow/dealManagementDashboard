@@ -13,6 +13,7 @@ export const useDealsStore = defineStore("deals", () => {
 
   const hasMore = computed(() => deals.value.length < total.value);
 
+  // Fetch deals with optional silent mode
   async function loadDeals(silent = false) {
     if (!silent) loading.value = true;
     error.value = null;
@@ -28,20 +29,19 @@ export const useDealsStore = defineStore("deals", () => {
     }
   }
 
-  // load next page
+  // Fetch next page
   function loadNextPage() {
     page.value++;
     loadDeals();
   }
 
+  // Start automatic polling
   function startPolling() {
     if (intervalId) return;
-
-    intervalId = setInterval(() => {
-      loadDeals(true); // silent refresh
-    }, 5000); // each 5 sekundi
+    intervalId = setInterval(() => loadDeals(true), 5000); // silent refresh
   }
 
+  // Stop polling
   function stopPolling() {
     if (intervalId) {
       clearInterval(intervalId);
