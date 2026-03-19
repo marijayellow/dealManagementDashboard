@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import SearchInput from "../components/SearchInput.vue";
 import TableFilters from "../components/TableFilters.vue";
+import DealTable from "../components/DealTable.vue";
 import { useDealsStore } from "../stores/dealsStore";
 import { useUserStore } from "../stores/userStore";
 
@@ -20,10 +21,8 @@ const filteredDeals = computed(() => {
   const term = search.value.toLowerCase().trim();
 
   return store.deals.filter((deal) => {
-    // Role-based access
     if (!userStore.canViewDeal(deal.id)) return false;
 
-    // Search + filter
     const matchesSearch =
       deal.name.toLowerCase().includes(term) ||
       deal.account.toLowerCase().includes(term) ||
@@ -51,6 +50,7 @@ onMounted(() => {
 
   if (store.startPolling) store.startPolling();
 });
+
 onUnmounted(() => {
   if (store.stopPolling) store.stopPolling();
 });
@@ -77,12 +77,11 @@ function statusClass(status) {
         {{ $t("dashboardTitle") }}
       </h1>
 
-      <!-- SEARCH + FILTERS CENTERED -->
+      <!-- SEARCH + FILTERS -->
       <div
         class="flex flex-col md:flex-col md:justify-center items-center gap-4 mb-6 w-full"
       >
         <SearchInput v-model="search" />
-
         <TableFilters
           :selectedStatuses="selectedStatuses"
           :minAmount="minAmount"
@@ -93,104 +92,36 @@ function statusClass(status) {
         />
       </div>
 
+      <!-- INITIAL LOADING -->
+      <div
+        v-if="store.loading && store.deals.length === 0"
+        class="py-4 text-center text-gray-500"
+      >
+        {{ $t("loading") }}
+      </div>
+
       <!-- ERROR -->
-      <div v-if="store.error" class="text-red-500 text-center mb-4">
+      <div v-else-if="store.error" class="text-red-500 text-center mb-4">
         {{ store.error }}
         <button @click="store.loadDeals" class="ml-2 underline">
           {{ $t("retry") }}
         </button>
       </div>
 
-      <!-- TABLE / LIST -->
-      <div class="overflow-x-auto">
-        <table class="w-full border border-gray-200 rounded-lg">
-          <thead
-            class="hidden md:table-header-group bg-gray-50 text-sm text-gray-600"
-          >
-            <tr>
-              <th class="p-3 text-center">📄 {{ $t("description") }}</th>
-              <th class="p-3 text-center">🏢 {{ $t("account") }}</th>
-              <th class="p-3 text-center">📊 {{ $t("status") }}</th>
-              <th class="p-3 text-center">💰 {{ $t("amount") }}</th>
-              <th class="p-3 text-center">📅 {{ $t("created") }}</th>
-            </tr>
-          </thead>
+      <!-- DEAL TABLE -->
+      <DealTable v-else :deals="filteredDeals" @rowClick="goToDeal" />
 
-          <tbody>
-            <tr
-              v-for="deal in filteredDeals"
-              :key="deal.id"
-              @click="goToDeal(deal.id)"
-              class="block md:table-row border mb-4 md:mb-0 rounded-lg md:rounded-none shadow md:shadow-none hover:bg-gray-50 cursor-pointer transition"
-            >
-              <!-- NAME -->
-              <td class="p-3 block md:table-cell text-left md:text-center">
-                <span class="md:hidden font-semibold block mb-1">{{
-                  $t("description")
-                }}</span>
-                <span class="font-medium text-gray-800">{{ deal.name }}</span>
-              </td>
-
-              <!-- ACCOUNT -->
-              <td class="p-3 block md:table-cell text-left md:text-center">
-                <span class="md:hidden font-semibold block mb-1">{{
-                  $t("account")
-                }}</span>
-                {{ deal.account }}
-              </td>
-
-              <!-- STATUS -->
-              <td class="p-3 block md:table-cell text-left md:text-center">
-                <span class="md:hidden font-semibold block mb-1">{{
-                  $t("status")
-                }}</span>
-                <span
-                  class="px-2 py-1 text-xs rounded-full"
-                  :class="statusClass(deal.status)"
-                >
-                  {{ deal.status }}
-                </span>
-              </td>
-
-              <!-- AMOUNT -->
-              <td class="p-3 block md:table-cell text-left md:text-center">
-                <span class="md:hidden font-semibold block mb-1">{{
-                  $t("amount")
-                }}</span>
-                ${{ deal.amount }}
-              </td>
-
-              <!-- CREATED -->
-              <td class="p-3 block md:table-cell text-left md:text-center">
-                <span class="md:hidden font-semibold block mb-1">{{
-                  $t("created")
-                }}</span>
-                {{ deal.createdAt }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- EMPTY STATE -->
-      <p
-        v-if="filteredDeals.length === 0"
-        class="text-gray-500 mt-4 text-center"
-      >
-        {{ $t("noResults") }}
-      </p>
-
-      <!-- LOAD MORE -->
+      <!-- LOAD MORE BUTTON  -->
       <div
         v-if="store.hasMore && userStore.role === 'Admin'"
-        class="mt-6 flex justify-center"
+        class="mt-4 flex justify-center"
       >
         <button
           @click="store.loadNextPage()"
           class="w-full md:w-auto bg-blue-700 text-white px-3 py-2 rounded hover:bg-blue-600 transition"
           :disabled="store.loading"
         >
-          {{ store.loading ? $t("loading") : $t("loadMore") }}
+          {{ $t("loadMore") }}
         </button>
       </div>
     </div>

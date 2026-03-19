@@ -1,31 +1,42 @@
 <script setup>
 import { ref, watch } from "vue";
 
-// Props: receive filter state from parent
+// Props
 const props = defineProps({
   selectedStatuses: Array,
   minAmount: Number,
   maxAmount: Number,
 });
 
-// Emits: update filter state to parent
+// Emits
 const emit = defineEmits([
   "update:selectedStatuses",
   "update:minAmount",
   "update:maxAmount",
 ]);
 
-// Local copies for controlled inputs
+// Local state
 const localStatuses = ref([...props.selectedStatuses]);
-const localMin = ref(props.minAmount);
-const localMax = ref(props.maxAmount);
+const localMin = ref(props.minAmount ?? null);
+const localMax = ref(props.maxAmount ?? null);
 
-// Sync local changes to parent via emits
-watch(localStatuses, (val) => emit("update:selectedStatuses", val));
-watch(localMin, (val) => emit("update:minAmount", val));
-watch(localMax, (val) => emit("update:maxAmount", val));
+// Sync statuses
+watch(localStatuses, (val) => {
+  emit("update:selectedStatuses", val);
+});
 
-// Reset all filters
+// FIX: always emit number or null (never string)
+watch(localMin, (val) => {
+  const parsed = val === "" ? null : Number(val);
+  emit("update:minAmount", isNaN(parsed) ? null : parsed);
+});
+
+watch(localMax, (val) => {
+  const parsed = val === "" ? null : Number(val);
+  emit("update:maxAmount", isNaN(parsed) ? null : parsed);
+});
+
+// Clear filters
 function clearFilters() {
   localStatuses.value = [];
   localMin.value = null;
