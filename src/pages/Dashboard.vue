@@ -181,7 +181,10 @@ function statusClass(status) {
       </p>
 
       <!-- LOAD MORE -->
-      <div v-if="store.hasMore" class="mt-6 flex justify-center">
+      <div
+        v-if="store.hasMore && userStore.role === 'Admin'"
+        class="mt-6 flex justify-center"
+      >
         <button
           @click="store.loadNextPage()"
           class="w-full md:w-auto bg-blue-700 text-white px-3 py-2 rounded hover:bg-blue-600 transition"
