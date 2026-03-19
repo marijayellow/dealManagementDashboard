@@ -1,0 +1,209 @@
+[
+  {
+    "id": 1,
+    "name": "Cloud Migration Deal",
+    "account": "TechCorp",
+    "status": "Open",
+    "amount": 12000,
+    "createdAt": "2024-01-10",
+    "updatedAt": "2024-01-12"
+  },
+  {
+    "id": 2,
+    "name": "Security Upgrade",
+    "account": "SecureIT",
+    "status": "Approved",
+    "amount": 25000,
+    "createdAt": "2024-02-01",
+    "updatedAt": "2024-02-03"
+  },
+  {
+    "id": 3,
+    "name": "Backup Solution",
+    "account": "DataSafe",
+    "status": "Rejected",
+    "amount": 8000,
+    "createdAt": "2024-01-20",
+    "updatedAt": "2024-01-21"
+  },
+  {
+    "id": 4,
+    "name": "Enterprise SaaS",
+    "account": "BigCorp",
+    "status": "Open",
+    "amount": 50000,
+    "createdAt": "2024-03-05",
+    "updatedAt": "2024-03-06"
+  },
+  {
+    "id": 5,
+    "name": "Cloud Storage Expansion",
+    "account": "Cloudy",
+    "status": "Approved",
+    "amount": 15000,
+    "createdAt": "2024-02-15",
+    "updatedAt": "2024-02-16"
+  },
+  {
+    "id": 6,
+    "name": "AI Integration",
+    "account": "FutureTech",
+    "status": "Open",
+    "amount": 70000,
+    "createdAt": "2024-03-10",
+    "updatedAt": "2024-03-11"
+  },
+  {
+    "id": 7,
+    "name": "DevOps Automation",
+    "account": "BuildFast",
+    "status": "Approved",
+    "amount": 22000,
+    "createdAt": "2024-01-25",
+    "updatedAt": "2024-01-28"
+  },
+  {
+    "id": 8,
+    "name": "Infrastructure Upgrade",
+    "account": "InfraCorp",
+    "status": "Rejected",
+    "amount": 18000,
+    "createdAt": "2024-02-20",
+    "updatedAt": "2024-02-21"
+  },
+  {
+    "id": 9,
+    "name": "Monitoring Tools",
+    "account": "OpsTools",
+    "status": "Open",
+    "amount": 9000,
+    "createdAt": "2024-03-01",
+    "updatedAt": "2024-03-02"
+  },
+  {
+    "id": 10,
+    "name": "Data Analytics Platform",
+    "account": "InsightCorp",
+    "status": "Approved",
+    "amount": 45000,
+    "createdAt": "2024-01-12",
+    "updatedAt": "2024-01-13"
+  },
+  {
+    "id": 11,
+    "name": "Cloud Sync",
+    "account": "Cloudy",
+    "status": "Open",
+    "amount": 12000,
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-16"
+  },
+  {
+    "id": 12,
+    "name": "Mobile App Integration",
+    "account": "AppCorp",
+    "status": "Approved",
+    "amount": 30000,
+    "createdAt": "2024-02-05",
+    "updatedAt": "2024-02-06"
+  },
+  {
+    "id": 13,
+    "name": "Server Migration",
+    "account": "TechCorp",
+    "status": "Rejected",
+    "amount": 20000,
+    "createdAt": "2024-01-18",
+    "updatedAt": "2024-01-19"
+  },
+  {
+    "id": 14,
+    "name": "Database Upgrade",
+    "account": "DataSafe",
+    "status": "Open",
+    "amount": 25000,
+    "createdAt": "2024-03-02",
+    "updatedAt": "2024-03-03"
+  },
+  {
+    "id": 15,
+    "name": "Security Patch",
+    "account": "SecureIT",
+    "status": "Approved",
+    "amount": 10000,
+    "createdAt": "2024-02-10",
+    "updatedAt": "2024-02-12"
+  },
+  {
+    "id": 16,
+    "name": "Cloud Backup Expansion",
+    "account": "Cloudy",
+    "status": "Rejected",
+    "amount": 15000,
+    "createdAt": "2024-01-30",
+    "updatedAt": "2024-02-01"
+  },
+  {
+    "id": 17,
+    "name": "AI Chat Integration",
+    "account": "FutureTech",
+    "status": "Open",
+    "amount": 50000,
+    "createdAt": "2024-03-12",
+    "updatedAt": "2024-03-13"
+  },
+  {
+    "id": 18,
+    "name": "DevOps Monitoring",
+    "account": "BuildFast",
+    "status": "Approved",
+    "amount": 22000,
+    "createdAt": "2024-02-02",
+    "updatedAt": "2024-02-04"
+  },
+  {
+    "id": 19,
+    "name": "Network Upgrade",
+    "account": "InfraCorp",
+    "status": "Rejected",
+    "amount": 18000,
+    "createdAt": "2024-01-28",
+    "updatedAt": "2024-01-29"
+  },
+  {
+    "id": 20,
+    "name": "Analytics Dashboard",
+    "account": "InsightCorp",
+    "status": "Open",
+    "amount": 35000,
+    "createdAt": "2024-03-03",
+    "updatedAt": "2024-03-04"
+  },
+  {
+    "id": 1,
+    "name": "Cloud Migration Deal Duplicate",
+    "account": "TechCorp",
+    "status": "Approved",
+    "amount": 13000,
+    "createdAt": "2024-01-10",
+    "updatedAt": "2024-01-15"
+  },
+  {
+    "id": 5,
+    "name": "Cloud Storage Expansion Duplicate",
+    "account": "Cloudy",
+    "status": "Rejected",
+    "amount": 16000,
+    "createdAt": "2024-02-15",
+    "updatedAt": "2024-02-20"
+  },
+  {
+    "id": 10,
+    "name": "Data Analytics Platform Duplicate",
+    "account": "InsightCorp",
+    "status": "Approved",
+    "amount": 47000,
+    "createdAt": "2024-01-12",
+    "updatedAt": "2024-01-15"
+  }
+]
