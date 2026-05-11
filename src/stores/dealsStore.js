@@ -8,7 +8,7 @@ export const useDealsStore = defineStore("deals", () => {
   const total = ref(0);
   const loading = ref(false);
   const error = ref(null);
-  const limit = 5;
+  const limit = 10;
   let intervalId = null;
 
   const hasMore = computed(() => deals.value.length < total.value);

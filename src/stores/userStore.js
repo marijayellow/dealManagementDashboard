@@ -1,21 +1,65 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 export const useUserStore = defineStore("user", () => {
-  // Current user role: "Admin" or "Partner"
-  const role = ref("Admin");
+  // Mock users
+  const users = {
+    admin: {
+      role: "Admin",
+      assignedDealIds: [],
+    },
 
-  // Partner's assigned deals (IDs)
-  const assignedDealIds = ref([1, 2, 3]);
+    partner1: {
+      role: "Partner 1",
+      assignedDealIds: [1, 2, 3],
+    },
 
-  // Check if user can view a deal
+    partner2: {
+      role: "Partner 2",
+      assignedDealIds: [3, 4, 5, 6],
+    },
+  };
+
+  // Current user
+  const currentUserKey = ref("admin");
+
+  const currentUser = computed(() => users[currentUserKey.value]);
+
+  // ALL USERS AS ARRAY (IMPORTANT FOR TAGS)
+  const usersList = computed(() => {
+    return Object.entries(users).map(([key, user]) => ({
+      key,
+      ...user,
+    }));
+  });
+
+  // CHECK ACCESS FOR CURRENT USER
   function canViewDeal(dealId) {
-    return role.value === "Admin" || assignedDealIds.value.includes(dealId);
+    if (currentUser.value.role === "Admin") return true;
+
+    return currentUser.value.assignedDealIds.includes(dealId);
+  }
+
+  // CHECK ACCESS FOR ANY USER
+  function canViewDealForUser(user, dealId) {
+    if (user.role === "Admin") return true;
+
+    return user.assignedDealIds.includes(dealId);
+  }
+
+  function switchUser(userKey) {
+    if (users[userKey]) {
+      currentUserKey.value = userKey;
+    }
   }
 
   return {
-    role,
-    assignedDealIds,
+    users,
+    usersList,
+    currentUserKey,
+    currentUser,
     canViewDeal,
+    canViewDealForUser,
+    switchUser,
   };
 });

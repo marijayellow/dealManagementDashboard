@@ -113,7 +113,7 @@ function statusClass(status) {
 
       <!-- LOAD MORE BUTTON  -->
       <div
-        v-if="store.hasMore && userStore.role === 'Admin'"
+        v-if="store.hasMore && userStore.currentUser.role === 'Admin'"
         class="mt-4 flex justify-center"
       >
         <button
