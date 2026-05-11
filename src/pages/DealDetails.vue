@@ -96,7 +96,7 @@ function roleIcon(role) {
 
       <!-- ERRORS -->
       <div v-else-if="error === 'notFound'" class="text-red-500 text-center">
-        {{ $t("notResults") }}
+        {{ $t("noResults") }}
       </div>
 
       <div v-else-if="error === 'noAccess'" class="text-red-500 text-center">

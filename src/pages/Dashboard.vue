@@ -11,6 +11,7 @@ const store = useDealsStore();
 const userStore = useUserStore();
 const router = useRouter();
 
+const pollingInterval = ref(null);
 const search = ref("");
 const selectedStatuses = ref([]);
 const minAmount = ref(null);
@@ -48,11 +49,18 @@ onMounted(() => {
   // Caching check
   if (!store.deals.length) store.loadDeals();
 
-  if (store.startPolling) store.startPolling();
+  // Start polling
+  pollingInterval.value = setInterval(() => {
+    store.loadDeals(true); // silent refresh
+  }, 5000);
 });
 
 onUnmounted(() => {
-  if (store.stopPolling) store.stopPolling();
+  // Cleanup polling
+  if (pollingInterval.value) {
+    clearInterval(pollingInterval.value);
+    pollingInterval.value = null;
+  }
 });
 
 // Status style

@@ -35,20 +35,6 @@ export const useDealsStore = defineStore("deals", () => {
     loadDeals();
   }
 
-  // Start automatic polling
-  function startPolling() {
-    if (intervalId) return;
-    intervalId = setInterval(() => loadDeals(true), 5000); // silent refresh
-  }
-
-  // Stop polling
-  function stopPolling() {
-    if (intervalId) {
-      clearInterval(intervalId);
-      intervalId = null;
-    }
-  }
-
   return {
     deals,
     page,
@@ -58,7 +44,5 @@ export const useDealsStore = defineStore("deals", () => {
     hasMore,
     loadDeals,
     loadNextPage,
-    startPolling,
-    stopPolling,
   };
 });
