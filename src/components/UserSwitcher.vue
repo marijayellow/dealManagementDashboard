@@ -1,26 +1,26 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useUserStore } from "../stores/userStore";
+import { useI18n } from "vue-i18n";
 
 const userStore = useUserStore();
+const { t } = useI18n();
 
 const isOpen = ref(false);
 
+// Users config (labels are now i18n keys)
 const users = [
   {
     key: "admin",
-    label: "Admin",
-    icon: "👑",
+    labelKey: "admin",
   },
   {
     key: "partner1",
-    label: "Partner 1",
-    icon: "👤",
+    labelKey: "partner1",
   },
   {
     key: "partner2",
-    label: "Partner 2",
-    icon: "👥",
+    labelKey: "partner2",
   },
 ];
 
@@ -36,9 +36,7 @@ onMounted(() => {
 // Change user
 function changeUser(userKey) {
   userStore.switchUser(userKey);
-
   sessionStorage.setItem("userRole", userKey);
-
   isOpen.value = false;
 }
 
@@ -62,8 +60,7 @@ const buttonClass = (userKey) =>
           buttonClass(user.key),
         ]"
       >
-        <span>{{ user.icon }}</span>
-        <span>{{ user.label }}</span>
+        <span>{{ t(user.labelKey) }}</span>
       </button>
     </div>
 
@@ -92,7 +89,7 @@ const buttonClass = (userKey) =>
           ]"
         >
           <span>{{ user.icon }}</span>
-          <span>{{ user.label }}</span>
+          <span>{{ t(user.labelKey) }}</span>
         </button>
       </div>
     </div>

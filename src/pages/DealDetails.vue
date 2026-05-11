@@ -26,7 +26,6 @@ async function loadDeal() {
 
     if (!userStore.canViewDeal(found.id)) {
       error.value = "noAccess";
-      deal.value = null;
       return;
     }
 
@@ -71,14 +70,6 @@ const usersWithAccess = computed(() => {
     userStore.canViewDealForUser(user, deal.value.id),
   );
 });
-
-// ROLE ICONS (NEW)
-function roleIcon(role) {
-  if (role === "Admin") return "👑";
-  if (role === "Partner 1") return "👤";
-  if (role === "Partner 2") return "👥";
-  return "👤";
-}
 </script>
 
 <template>
@@ -100,11 +91,11 @@ function roleIcon(role) {
       </div>
 
       <div v-else-if="error === 'noAccess'" class="text-red-500 text-center">
-        You do not have access to this deal.
+        {{ $t("noAccess") }}
       </div>
 
       <div v-else-if="error === 'error'" class="text-red-500 text-center">
-        Something went wrong.
+        {{ $t("error") }}
       </div>
 
       <!-- CONTENT -->
@@ -148,7 +139,9 @@ function roleIcon(role) {
 
         <!-- ACCESS INFO -->
         <div class="mt-6 bg-blue-50 p-4 rounded-lg">
-          <p class="text-blue-700 font-medium mb-3">Access Information</p>
+          <p class="text-blue-700 font-medium mb-3">
+            {{ $t("accessInformation") }}
+          </p>
 
           <div class="flex flex-wrap gap-2">
             <span
@@ -156,11 +149,7 @@ function roleIcon(role) {
               :key="user.key"
               class="px-3 py-1 text-sm font-medium rounded-full bg-indigo-100 text-indigo-700 flex items-center gap-1"
             >
-              <span class="text-xs">
-                {{ roleIcon(user.role) }}
-              </span>
-
-              {{ user.role }}
+              {{ $t(user.role.toLowerCase().replace(" ", "")) }}
             </span>
           </div>
         </div>
