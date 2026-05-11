@@ -16,6 +16,11 @@ const messages = {
     updated: "Updated",
     description: "Description",
     loading: "Loading...",
+    open: "Open",
+    approved: "Approved",
+    rejected: "Rejected",
+    min: "Min",
+    max: "Max",
   },
   ja: {
     dashboardTitle: "ディールダッシュボード",
@@ -32,6 +37,11 @@ const messages = {
     updated: "更新日",
     description: "説明",
     loading: "読み込み中...",
+    open: "未処理",
+    approved: "承認済み",
+    rejected: "却下",
+    min: "最小",
+    max: "最大",
   },
   de: {
     dashboardTitle: "Deal-Dashboard",
@@ -48,6 +58,11 @@ const messages = {
     updated: "Aktualisiert",
     description: "Beschreibung",
     loading: "Wird geladen...",
+    open: "Offen",
+    approved: "Genehmigt",
+    rejected: "Abgelehnt",
+    min: "Min",
+    max: "Max",
   },
   es: {
     dashboardTitle: "Panel de Tratos",
@@ -64,6 +79,11 @@ const messages = {
     updated: "Actualizado",
     description: "Descripción",
     loading: "Cargando...",
+    open: "Abierto",
+    approved: "Aprobado",
+    rejected: "Rechazado",
+    min: "Mín",
+    max: "Máx",
   },
 };
 

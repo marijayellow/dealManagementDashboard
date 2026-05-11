@@ -58,7 +58,7 @@ function statusClass(status) {
               class="px-2 py-1 text-xs rounded-full"
               :class="statusClass(deal.status)"
             >
-              {{ deal.status }}
+              {{ $t(deal.status.toLowerCase()) }}
             </span>
           </td>
 

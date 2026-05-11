@@ -59,6 +59,22 @@ export async function fetchDeals({ page = 1, limit = 5 }) {
 }
 
 /**
+ * Get a single deal by ID
+ * Simulates API endpoint for fetching individual deal details
+ */
+export async function getDealById(id) {
+  await delay(300); // Simulate network delay
+  
+  const deal = dealsData.find(d => String(d.id) === String(id));
+  
+  if (!deal) {
+    throw new Error(`Deal with ID ${id} not found`);
+  }
+  
+  return deal;
+}
+
+/**
  * Merge existing deals with new deals and deduplicate
  * Useful for pagination and data refresh
  */

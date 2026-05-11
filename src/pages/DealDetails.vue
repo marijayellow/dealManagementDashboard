@@ -1,8 +1,9 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useDealsStore } from "../stores/dealsStore";
 import { useUserStore } from "../stores/userStore";
+import { getDealById } from "../services/dealService";
 
 const route = useRoute();
 const router = useRouter();
@@ -18,16 +19,8 @@ const dealId = route.params.id;
 
 onMounted(async () => {
   try {
-    if (!store.deals.length) {
-      await store.loadDeals();
-    }
-
-    const found = store.deals.find((d) => String(d.id) === String(dealId));
-
-    if (!found) {
-      error.value = "notFound";
-      return;
-    }
+    // Fetch deal directly by ID using new endpoint
+    const found = await getDealById(dealId);
 
     // Role check
     if (!userStore.canViewDeal(found.id)) {
@@ -37,9 +30,25 @@ onMounted(async () => {
 
     deal.value = found;
   } catch (e) {
-    error.value = "error";
+    if (e.message.includes("not found")) {
+      error.value = "notFound";
+    } else {
+      error.value = "error";
+    }
   } finally {
     loading.value = false;
+  }
+});
+
+// Watch for role changes and re-check access
+watch(() => userStore.role, async () => {
+  if (deal.value) {
+    // Re-check access when role changes
+    if (!userStore.canViewDeal(deal.value.id)) {
+      error.value = "noAccess";
+    } else {
+      error.value = null; // Clear access error if now has access
+    }
   }
 });
 
@@ -94,12 +103,21 @@ function statusClass(status) {
             {{ deal.name }}
           </h1>
 
-          <span
-            class="px-3 py-1 text-sm rounded-full"
-            :class="statusClass(deal.status)"
-          >
-            {{ deal.status }}
-          </span>
+          <!-- Role Tag -->
+          <div class="flex items-center gap-2">
+            <span
+              class="px-2 py-1 text-xs rounded-full bg-purple-100 text-purple-700"
+            >
+              {{ userStore.role }}
+            </span>
+            
+            <span
+              class="px-3 py-1 text-sm rounded-full"
+              :class="statusClass(deal.status)"
+            >
+              {{ $t(deal.status.toLowerCase()) }}
+            </span>
+          </div>
         </div>
 
         <!-- INFO GRID -->
@@ -122,6 +140,28 @@ function statusClass(status) {
           <div class="bg-gray-50 p-4 rounded-lg">
             <p class="text-gray-500">{{ $t("updated") }}</p>
             <p class="font-medium text-gray-800">{{ deal.updatedAt }}</p>
+          </div>
+        </div>
+
+        <!-- ACCESS INFO -->
+        <div class="bg-blue-50 p-4 rounded-lg">
+          <p class="text-blue-500 mb-1 font-medium">Access Information</p>
+          <div class="space-y-2">
+            <div class="flex items-center">
+              <span class="text-gray-600 w-20">Current User:</span>
+              <span class="font-medium">{{ userStore.role }}</span>
+            </div>
+            <div class="flex items-center">
+              <span class="text-gray-600 w-20">Can View:</span>
+              <span class="font-medium text-green-600">Yes</span>
+            </div>
+            <div class="flex items-center">
+              <span class="text-gray-600 w-20">Visible To:</span>
+              <span class="font-medium">
+                <span v-if="userStore.role === 'Admin'" class="text-green-600">All Users</span>
+                <span v-else class="text-blue-600">Admin + Partners (IDs: {{ userStore.assignedDealIds.join(', ') }})</span>
+              </span>
+            </div>
           </div>
         </div>
 

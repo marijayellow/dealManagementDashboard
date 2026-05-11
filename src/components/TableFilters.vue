@@ -66,7 +66,7 @@ function clearFilters() {
             v-model="localStatuses"
             class="accent-blue-500"
           />
-          Open
+          {{ $t("open") }}
         </label>
 
         <label class="flex items-center gap-1">
@@ -76,7 +76,7 @@ function clearFilters() {
             v-model="localStatuses"
             class="accent-green-500"
           />
-          Approved
+          {{ $t("approved") }}
         </label>
 
         <label class="flex items-center gap-1">
@@ -86,7 +86,7 @@ function clearFilters() {
             v-model="localStatuses"
             class="accent-red-500"
           />
-          Rejected
+          {{ $t("rejected") }}
         </label>
       </div>
     </div>
@@ -101,13 +101,13 @@ function clearFilters() {
         <input
           type="number"
           v-model="localMin"
-          placeholder="Min"
+          :placeholder="$t('min')"
           class="border rounded px-2 py-1 w-full md:w-20 focus:outline-none focus:ring-1 focus:ring-blue-400"
         />
         <input
           type="number"
           v-model="localMax"
-          placeholder="Max"
+          :placeholder="$t('max')"
           class="border rounded px-2 py-1 w-full md:w-20 focus:outline-none focus:ring-1 focus:ring-blue-400"
         />
       </div>
