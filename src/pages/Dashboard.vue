@@ -79,15 +79,16 @@ function statusClass(status) {
       class="max-w-6xl mx-auto bg-white rounded-2xl shadow-md p-4 md:p-6 mt-6"
     >
       <!-- HEADER -->
-      <h1
-        class="text-2xl md:text-3xl font-semibold mb-6 text-gray-800 text-center"
-      >
+      <h1 class="text-2xl md:text-3xl font-semibold mb-1 text-gray-800">
         {{ $t("dashboardTitle") }}
       </h1>
+      <p class="text-sm text-gray-500 mb-4">
+        {{ $t("dashboardSubtitle") }}
+      </p>
 
       <!-- SEARCH + FILTERS -->
       <div
-        class="flex flex-col md:flex-col md:justify-center items-center gap-4 mb-6 w-full"
+        class="flex flex-col md:flex-col md:justify-center gap-3 mb-4 w-full"
       >
         <SearchInput v-model="search" />
         <TableFilters

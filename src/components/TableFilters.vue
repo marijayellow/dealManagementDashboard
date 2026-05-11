@@ -50,48 +50,57 @@ function clearFilters() {
 
 <template>
   <div
-    class="flex flex-col md:flex-row md:flex-wrap gap-4 mb-4 w-full items-start md:items-center justify-center"
+    class="flex flex-col md:flex-row md:flex-wrap gap-4 mb-4 w-full items-start md:items-center"
   >
-    <!-- STATUS FILTER -->
+    <!-- STATUS -->
     <div
       class="flex flex-col md:flex-row md:items-center gap-2 w-full md:w-auto"
     >
       <strong class="mb-1 md:mb-0">{{ $t("status") }}</strong>
 
       <div class="flex flex-col md:flex-row gap-2">
-        <label class="flex items-center gap-1">
+        <!-- OPEN -->
+        <label
+          class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm cursor-pointer bg-blue-50 text-blue-700 hover:bg-blue-100 transition"
+        >
           <input
             type="checkbox"
             value="Open"
             v-model="localStatuses"
-            class="accent-blue-500"
+            class="w-4 h-4 border-gray-300 rounded"
           />
           {{ $t("open") }}
         </label>
 
-        <label class="flex items-center gap-1">
+        <!-- APPROVED -->
+        <label
+          class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm cursor-pointer bg-green-50 text-green-700 hover:bg-green-100 transition"
+        >
           <input
             type="checkbox"
             value="Approved"
             v-model="localStatuses"
-            class="accent-green-500"
+            class="w-4 h-4 border-gray-300 rounded"
           />
           {{ $t("approved") }}
         </label>
 
-        <label class="flex items-center gap-1">
+        <!-- REJECTED -->
+        <label
+          class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm cursor-pointer bg-red-50 text-red-700 hover:bg-red-100 transition"
+        >
           <input
             type="checkbox"
             value="Rejected"
             v-model="localStatuses"
-            class="accent-red-500"
+            class="w-4 h-4 border-gray-300 rounded"
           />
           {{ $t("rejected") }}
         </label>
       </div>
     </div>
 
-    <!-- AMOUNT FILTER -->
+    <!-- AMOUNT -->
     <div
       class="flex flex-col md:flex-row md:items-center gap-2 w-full md:w-auto"
     >
@@ -102,22 +111,23 @@ function clearFilters() {
           type="number"
           v-model="localMin"
           :placeholder="$t('min')"
-          class="border rounded px-2 py-1 w-full md:w-20 focus:outline-none focus:ring-1 focus:ring-blue-400"
+          class="h-9 border rounded px-2 w-full md:w-20 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-400"
         />
+
         <input
           type="number"
           v-model="localMax"
           :placeholder="$t('max')"
-          class="border rounded px-2 py-1 w-full md:w-20 focus:outline-none focus:ring-1 focus:ring-blue-400"
+          class="h-9 border rounded px-2 w-full md:w-20 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-400"
         />
       </div>
     </div>
 
-    <!-- CLEAR BUTTON -->
+    <!-- CLEAR -->
     <div class="w-full md:w-auto">
       <button
         @click="clearFilters"
-        class="w-full md:w-auto bg-blue-700 text-white px-3 py-2 rounded hover:bg-blue-600 transition"
+        class="h-9 w-full md:w-auto bg-blue-600 text-white px-3 rounded-lg hover:bg-blue-700 transition text-sm"
       >
         {{ $t("clearFilters") }}
       </button>

@@ -28,6 +28,7 @@ const messages = {
     accessInformation: "Access Information",
     noAccess: "You do not have access to this deal.",
     error: "Something went wrong.",
+    dashboardSubtitle: "Overview of deals dashboard",
   },
   ja: {
     dashboardTitle: "ディールダッシュボード",
@@ -56,6 +57,7 @@ const messages = {
     accessInformation: "アクセス情報",
     noAccess: "この取引にアクセスする権限がありません。",
     error: "問題が発生しました。",
+    dashboardSubtitle: "ディールダッシュボードの概要",
   },
   de: {
     dashboardTitle: "Deal-Dashboard",
@@ -84,6 +86,7 @@ const messages = {
     accessInformation: "Zugriffsinformationen",
     noAccess: "Sie haben keinen Zugriff auf diesen Deal.",
     error: "Etwas ist schiefgelaufen.",
+    dashboardSubtitle: "Übersicht des Deal-Dashboards",
   },
   es: {
     dashboardTitle: "Panel de Tratos",
@@ -112,6 +115,7 @@ const messages = {
     accessInformation: "Información de acceso",
     noAccess: "No tienes acceso a este trato.",
     error: "Algo salió mal.",
+    dashboardSubtitle: "Resumen del panel de tratos",
   },
 };
 

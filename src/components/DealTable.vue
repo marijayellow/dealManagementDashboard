@@ -21,11 +21,11 @@ function statusClass(status) {
         class="hidden md:table-header-group bg-gray-50 text-sm text-gray-600"
       >
         <tr>
-          <th class="p-3 text-center">📄 {{ $t("description") }}</th>
-          <th class="p-3 text-center">🏢 {{ $t("account") }}</th>
-          <th class="p-3 text-center">📊 {{ $t("status") }}</th>
-          <th class="p-3 text-center">💰 {{ $t("amount") }}</th>
-          <th class="p-3 text-center">📅 {{ $t("created") }}</th>
+          <th class="p-3 text-left">📄 {{ $t("description") }}</th>
+          <th class="p-3 text-left">🏢 {{ $t("account") }}</th>
+          <th class="p-3 text-left">📊 {{ $t("status") }}</th>
+          <th class="p-3 text-left">💰 {{ $t("amount") }}</th>
+          <th class="p-3 text-left">📅 {{ $t("created") }}</th>
         </tr>
       </thead>
 
@@ -36,21 +36,21 @@ function statusClass(status) {
           @click="$emit('rowClick', deal.id)"
           class="block md:table-row border mb-4 md:mb-0 rounded-lg md:rounded-none shadow md:shadow-none hover:bg-gray-50 cursor-pointer transition"
         >
-          <td class="p-3 block md:table-cell text-left md:text-center">
+          <td class="p-3 block md:table-cell text-left">
             <span class="md:hidden font-semibold block mb-1">{{
               $t("description")
             }}</span>
             <span class="font-medium text-gray-800">{{ deal.name }}</span>
           </td>
 
-          <td class="p-3 block md:table-cell text-left md:text-center">
+          <td class="p-3 block md:table-cell text-left">
             <span class="md:hidden font-semibold block mb-1">{{
               $t("account")
             }}</span>
             {{ deal.account }}
           </td>
 
-          <td class="p-3 block md:table-cell text-left md:text-center">
+          <td class="p-3 block md:table-cell text-left">
             <span class="md:hidden font-semibold block mb-1">{{
               $t("status")
             }}</span>
@@ -62,14 +62,14 @@ function statusClass(status) {
             </span>
           </td>
 
-          <td class="p-3 block md:table-cell text-left md:text-center">
+          <td class="p-3 block md:table-cell text-left">
             <span class="md:hidden font-semibold block mb-1">{{
               $t("amount")
             }}</span>
             ${{ deal.amount }}
           </td>
 
-          <td class="p-3 block md:table-cell text-left md:text-center">
+          <td class="p-3 block md:table-cell text-left">
             <span class="md:hidden font-semibold block mb-1">{{
               $t("created")
             }}</span>
