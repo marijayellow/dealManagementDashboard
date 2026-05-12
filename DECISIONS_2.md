@@ -162,7 +162,3 @@ If needed, more advanced functionality can be added later, such as:
 - database integration
 - authentication
 - fully implemented API endpoints
-
-```
-
-```
