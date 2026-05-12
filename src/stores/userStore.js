@@ -25,14 +25,6 @@ export const useUserStore = defineStore("user", () => {
 
   const currentUser = computed(() => users[currentUserKey.value]);
 
-  // ALL USERS AS ARRAY (IMPORTANT FOR TAGS)
-  const usersList = computed(() => {
-    return Object.entries(users).map(([key, user]) => ({
-      key,
-      ...user,
-    }));
-  });
-
   // CHECK ACCESS FOR CURRENT USER
   function canViewDeal(dealId) {
     if (currentUser.value.role === "Admin") return true;
@@ -55,7 +47,6 @@ export const useUserStore = defineStore("user", () => {
 
   return {
     users,
-    usersList,
     currentUserKey,
     currentUser,
     canViewDeal,

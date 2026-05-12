@@ -1,16 +1,10 @@
 <script setup>
+import { statusClass } from "../utils/statusUtils.js";
+
 const props = defineProps({
   deals: Array,
 });
 const emit = defineEmits(["rowClick"]);
-
-function statusClass(status) {
-  return {
-    Open: "bg-gray-200 text-gray-700",
-    Approved: "bg-green-100 text-green-700",
-    Rejected: "bg-red-100 text-red-700",
-  }[status];
-}
 </script>
 
 <template>

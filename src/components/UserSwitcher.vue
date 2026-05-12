@@ -10,18 +10,9 @@ const isOpen = ref(false);
 
 // Users config (labels are now i18n keys)
 const users = [
-  {
-    key: "admin",
-    labelKey: "admin",
-  },
-  {
-    key: "partner1",
-    labelKey: "partner1",
-  },
-  {
-    key: "partner2",
-    labelKey: "partner2",
-  },
+  { labelKey: "admin" },
+  { labelKey: "partner1" },
+  { labelKey: "partner2" },
 ];
 
 // Restore saved user
@@ -33,16 +24,20 @@ onMounted(() => {
   }
 });
 
+// User keys for lookup
+const userKeys = ["admin", "partner1", "partner2"];
+
 // Change user
-function changeUser(userKey) {
+function changeUser(index) {
+  const userKey = userKeys[index];
   userStore.switchUser(userKey);
   sessionStorage.setItem("userRole", userKey);
   isOpen.value = false;
 }
 
 // Button styles
-const buttonClass = (userKey) =>
-  userStore.currentUserKey === userKey
+const buttonClass = (index) =>
+  userStore.currentUserKey === userKeys[index]
     ? "bg-blue-100 text-blue-800 font-semibold"
     : "bg-gray-100 text-gray-700 hover:bg-gray-200";
 </script>
@@ -52,12 +47,12 @@ const buttonClass = (userKey) =>
     <!-- DESKTOP -->
     <div class="hidden md:flex items-center gap-2">
       <button
-        v-for="user in users"
-        :key="user.key"
-        @click="changeUser(user.key)"
+        v-for="(user, index) in users"
+        :key="index"
+        @click="changeUser(index)"
         :class="[
           'flex items-center gap-2 px-3 py-1 rounded-lg transition-colors text-sm',
-          buttonClass(user.key),
+          buttonClass(index),
         ]"
       >
         <span>{{ t(user.labelKey) }}</span>
@@ -80,15 +75,14 @@ const buttonClass = (userKey) =>
         class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border p-2 z-50"
       >
         <button
-          v-for="user in users"
-          :key="user.key"
-          @click="changeUser(user.key)"
+          v-for="(user, index) in users"
+          :key="index"
+          @click="changeUser(index)"
           :class="[
             'w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-colors mb-1',
-            buttonClass(user.key),
+            buttonClass(index),
           ]"
         >
-          <span>{{ user.icon }}</span>
           <span>{{ t(user.labelKey) }}</span>
         </button>
       </div>

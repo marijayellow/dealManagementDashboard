@@ -3,6 +3,7 @@ import { ref, onMounted, watch, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useUserStore } from "../stores/userStore";
 import { getDealById } from "../services/dealService";
+import { statusClass } from "../utils/statusUtils.js";
 
 const route = useRoute();
 const router = useRouter();
@@ -54,21 +55,14 @@ function goBack() {
   router.push("/");
 }
 
-function statusClass(status) {
-  return {
-    Open: "bg-gray-200 text-gray-700",
-    Approved: "bg-green-100 text-green-700",
-    Rejected: "bg-red-100 text-red-700",
-  }[status];
-}
 
 // USERS WITH ACCESS
 const usersWithAccess = computed(() => {
   if (!deal.value) return [];
 
-  return userStore.usersList.filter((user) =>
-    userStore.canViewDealForUser(user, deal.value.id),
-  );
+  return Object.entries(userStore.users)
+    .map(([key, user]) => ({ key, ...user }))
+    .filter((user) => userStore.canViewDealForUser(user, deal.value.id));
 });
 </script>
 
