@@ -10,6 +10,16 @@ A backend simulation layer was implemented inside the `dealService`.
 
 I considered creating a real backend using Node.js + Express with a database, but due to the time constraints, I decided to implement a lightweight backend simulation approach that still demonstrates a realistic frontend/backend data flow.
 
+```text
+components
+   ↓
+Pinia store
+   ↓
+dealService.js  ← simulated backend layer
+   ↓
+mock deals.json ← simulated database
+```
+
 ## Current Data Flow
 
 ### Frontend Layer
@@ -148,7 +158,11 @@ Given the time constraints, my focus was to implement an architecture that:
 
 If needed, more advanced functionality can be added later, such as:
 
-- a real backend (Express/NestJS)
+- a real backend (Express/Node.js)
 - database integration
 - authentication
 - fully implemented API endpoints
+
+```
+
+```
