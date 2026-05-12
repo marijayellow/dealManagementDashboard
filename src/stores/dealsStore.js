@@ -1,48 +1,38 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
-import { fetchDeals, mergeDeals } from "../services/dealService";
+import { ref } from "vue";
+import { fetchDeals } from "../services/dealService";
 
 export const useDealsStore = defineStore("deals", () => {
   const deals = ref([]);
-  const page = ref(1);
   const total = ref(0);
+
   const loading = ref(false);
   const error = ref(null);
-  const limit = 7;
-  let intervalId = null;
 
-  const hasMore = computed(() => deals.value.length < total.value);
-
-  // Fetch deals with optional silent mode
-  async function loadDeals(silent = false) {
+  async function loadDeals(filters, silent = false) {
     if (!silent) loading.value = true;
+
     error.value = null;
 
     try {
-      const res = await fetchDeals({ page: page.value, limit });
-      deals.value = mergeDeals(deals.value, res.data);
+      const res = await fetchDeals(filters);
+
+      deals.value = res.data;
       total.value = res.total;
     } catch (e) {
-      if (!silent) error.value = e.message;
+      if (!silent) {
+        error.value = e.message;
+      }
     } finally {
       if (!silent) loading.value = false;
     }
   }
 
-  // Fetch next page
-  function loadNextPage() {
-    page.value++;
-    loadDeals();
-  }
-
   return {
     deals,
-    page,
     total,
     loading,
     error,
-    hasMore,
     loadDeals,
-    loadNextPage,
   };
 });

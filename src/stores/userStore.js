@@ -11,7 +11,7 @@ export const useUserStore = defineStore("user", () => {
 
     partner1: {
       role: "Partner 1",
-      assignedDealIds: [1, 2, 3],
+      assignedDealIds: [1, 2, 3, 7, 8, 10, 11, 12],
     },
 
     partner2: {

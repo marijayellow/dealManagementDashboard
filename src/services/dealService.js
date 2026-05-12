@@ -8,8 +8,7 @@ function delay(ms) {
 }
 
 /**
- * Deduplicate deals by `id`
- * If duplicates exist, keep the one with the latest `updatedAt`
+ * Deduplicate deals by id
  */
 function dedupeDeals(deals) {
   const map = new Map();
@@ -20,7 +19,6 @@ function dedupeDeals(deals) {
     if (!existing) {
       map.set(deal.id, deal);
     } else {
-      // Keep the deal with the newer updatedAt timestamp
       const existingDate = new Date(existing.updatedAt);
       const newDate = new Date(deal.updatedAt);
 
@@ -34,51 +32,83 @@ function dedupeDeals(deals) {
 }
 
 /**
- * Fetch deals with simulated API delay, deduplication and pagination
+ * FETCH DEALS
+ * Simulates backend filtering + authorization
  */
-export async function fetchDeals({ page = 1, limit = 5 }) {
+export async function fetchDeals({
+  user,
+  search = "",
+  statuses = [],
+  minAmount = null,
+  maxAmount = null,
+}) {
   await delay(500);
 
-  // Uncomment to simulate random API errors
-  // if (Math.random() < 0.2) throw new Error("Failed to fetch deals");
-
-  // Simulate API returning duplicates
+  // Simulate duplicated backend data
   const noisyData = [...dealsData, ...dealsData.slice(0, 3)];
 
-  // Deduplicate entire dataset
-  const uniqueDeals = dedupeDeals(noisyData);
+  // Deduplicate
+  let filtered = dedupeDeals(noisyData);
 
-  // Paginate the clean data
-  const start = (page - 1) * limit;
-  const paginated = uniqueDeals.slice(start, start + limit);
+  // ROLE AUTHORIZATION
+  if (user.role !== "Admin") {
+    filtered = filtered.filter((deal) =>
+      user.assignedDealIds.includes(deal.id),
+    );
+  }
+
+  // SEARCH
+  const term = search.toLowerCase().trim();
+
+  if (term) {
+    filtered = filtered.filter(
+      (deal) =>
+        deal.name.toLowerCase().includes(term) ||
+        deal.account.toLowerCase().includes(term) ||
+        deal.status.toLowerCase().includes(term),
+    );
+  }
+
+  // STATUS FILTER
+  if (statuses.length) {
+    filtered = filtered.filter((deal) =>
+      statuses.includes(deal.status),
+    );
+  }
+
+  // MIN AMOUNT
+  if (minAmount !== null) {
+    filtered = filtered.filter(
+      (deal) => deal.amount >= minAmount,
+    );
+  }
+
+  // MAX AMOUNT
+  if (maxAmount !== null) {
+    filtered = filtered.filter(
+      (deal) => deal.amount <= maxAmount,
+    );
+  }
 
   return {
-    data: paginated,
-    total: uniqueDeals.length,
+    data: filtered,
+    total: filtered.length,
   };
 }
 
 /**
- * Get a single deal by ID
- * Simulates API endpoint for fetching individual deal details
+ * GET SINGLE DEAL
  */
 export async function getDealById(id) {
-  await delay(300); // Simulate network delay
-  
-  const deal = dealsData.find(d => String(d.id) === String(id));
-  
+  await delay(300);
+
+  const deal = dealsData.find(
+    (d) => String(d.id) === String(id),
+  );
+
   if (!deal) {
     throw new Error(`Deal with ID ${id} not found`);
   }
-  
-  return deal;
-}
 
-/**
- * Merge existing deals with new deals and deduplicate
- * Useful for pagination and data refresh
- */
-export function mergeDeals(existingDeals, newDeals) {
-  const merged = [...existingDeals, ...newDeals];
-  return dedupeDeals(merged);
+  return deal;
 }
