@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from "vue";
-
 import { useRouter } from "vue-router";
 
 import SearchInput from "../components/SearchInput.vue";
@@ -16,10 +15,8 @@ const userStore = useUserStore();
 const router = useRouter();
 
 const pollingInterval = ref(null);
-
 const search = ref("");
 const selectedStatuses = ref([]);
-
 const minAmount = ref(null);
 const maxAmount = ref(null);
 
@@ -32,11 +29,8 @@ async function fetchFilteredDeals(silent = false) {
   await store.loadDeals(
     {
       user: userStore.currentUser,
-
       search: search.value,
-
       statuses: selectedStatuses.value,
-
       minAmount: minAmount.value,
       maxAmount: maxAmount.value,
     },

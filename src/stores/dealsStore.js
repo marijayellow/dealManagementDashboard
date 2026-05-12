@@ -5,7 +5,6 @@ import { fetchDeals } from "../services/dealService";
 export const useDealsStore = defineStore("deals", () => {
   const deals = ref([]);
   const total = ref(0);
-
   const loading = ref(false);
   const error = ref(null);
 

@@ -8,7 +8,7 @@ const { t } = useI18n();
 
 const isOpen = ref(false);
 
-// Users config (labels are now i18n keys)
+
 const users = [
   { labelKey: "admin" },
   { labelKey: "partner1" },
